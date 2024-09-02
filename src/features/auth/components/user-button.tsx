@@ -8,9 +8,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useCurentUser } from "../hooks/use-current-user";
+import { useCurentUser } from "../api/use-current-user";
 import { Loader, LogOut } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { useRouter } from "next/navigation";
 
 export const UserButton = () => {
   const { signOut } = useAuthActions();
@@ -43,7 +44,7 @@ export const UserButton = () => {
           onClick={() => {
             signOut();
           }}
-          className="h-10"
+          className="h-8"
         >
           <LogOut className="mr-2 size-4" />
           Log out
