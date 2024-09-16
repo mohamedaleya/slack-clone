@@ -41,6 +41,7 @@ const Editor = ({
   innerRef,
 }: EditorProps) => {
   const [text, setText] = useState("");
+  const [isToolbarVisible, setIsToolbarVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const submitRef = useRef(onSubmit);
@@ -68,6 +69,11 @@ const Editor = ({
       theme: "snow",
       placeholder: placeholderRef.current,
       modules: {
+        toolbar: [
+          ["bold", "italic", "strike"],
+          ["link"],
+          [{ list: "ordered" }, { list: "bullet" }],
+        ],
         keyboard: {
           bindings: {
             enter: {
@@ -118,6 +124,15 @@ const Editor = ({
     };
   }, [innerRef]);
 
+  const toggleToolbar = () => {
+    setIsToolbarVisible((current) => !current);
+    const toolbarElement = containerRef.current?.querySelector(".ql-toolbar");
+
+    if (toolbarElement) {
+      toolbarElement.classList.toggle("hidden");
+    }
+  };
+
   const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   return (
@@ -125,19 +140,21 @@ const Editor = ({
       <div className="flex flex-col overflow-hidden rounded-md border border-slate-200 bg-white transition focus-within:border-slate-300 focus-within:shadow-sm">
         <div ref={containerRef} className="ql-custom h-full" />
         <div className="z-[5] flex px-2 pb-2">
-          <Hint label="Hide formatting">
+          <Hint
+            label={isToolbarVisible ? "Hide formatting" : "Show formatting"}
+          >
             <Button
-              disabled={false}
+              disabled={disabled}
               size="iconSm"
               variant="ghost"
-              onClick={() => {}}
+              onClick={toggleToolbar}
             >
               <PiTextAa className="size-4" />
             </Button>
           </Hint>
           <Hint label="Emoji">
             <Button
-              disabled={false}
+              disabled={disabled}
               size="iconSm"
               variant="ghost"
               onClick={() => {}}
@@ -148,7 +165,7 @@ const Editor = ({
           {variant === "create" && (
             <Hint label="Image">
               <Button
-                disabled={false}
+                disabled={disabled}
                 size="iconSm"
                 variant="ghost"
                 onClick={() => {}}
@@ -163,12 +180,12 @@ const Editor = ({
                 variant="outline"
                 size="sm"
                 onClick={() => {}}
-                disabled={false}
+                disabled={disabled}
               >
                 Cancel
               </Button>
               <Button
-                disabled={false}
+                disabled={disabled || isEmpty}
                 onClick={() => {}}
                 size="sm"
                 className="bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
