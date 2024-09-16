@@ -103,9 +103,9 @@ body,
   color: #1264a3 !important;
 }
 
-.ql-editor:hover {
+/* .ql-editor:hover {
   text-decoration: underline !important;
-}
+} */
 
 .ql-renderer {
   padding: 0 !important;
