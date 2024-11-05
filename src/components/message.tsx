@@ -3,6 +3,7 @@ import { Doc, Id } from "../../convex/_generated/dataModel";
 import { format, isToday, isYesterday } from "date-fns";
 import { Hint } from "./hint";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Thumbnail } from "./thumbnail";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -63,8 +64,14 @@ export const Message = ({
               {format(new Date(createdAt), "hh:mm")}
             </button>
           </Hint>
+          <div className="flex w-full flex-col">
+            <Renderer value={body} />
+            <Thumbnail url={image} />
+            {updatedAt ? (
+              <span className="text-xs text-muted-foreground">(edited)</span>
+            ) : null}
+          </div>
         </div>
-        <Renderer value={body} />
       </div>
     );
   }
@@ -75,11 +82,9 @@ export const Message = ({
     <div className="group relative flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60">
       <div className="flex items-start gap-2">
         <button>
-          <Avatar className="mr-1 size-5 rounded-md">
+          <Avatar>
             <AvatarImage className="rounded-md" src={authorImage} />
-            <AvatarFallback className="rounded-md bg-sky-500 text-xs text-white">
-              {avatarFallback}
-            </AvatarFallback>
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
         </button>
         <div className="flex w-full flex-col overflow-hidden">
@@ -91,9 +96,17 @@ export const Message = ({
               {authorName}
             </button>
             <span>&nbsp;&nbsp;</span>
-            
+            <Hint label={formatFullTime(new Date(createdAt))}>
+              <button className="text-xs text-muted-foreground hover:underline">
+                {format(new Date(createdAt), "hh:mm a")}
+              </button>
+            </Hint>
           </div>
           <Renderer value={body} />
+          <Thumbnail url={image} />
+          {updatedAt ? (
+            <span className="text-xs text-muted-foreground">(edited)</span>
+          ) : null}
         </div>
       </div>
     </div>
