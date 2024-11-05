@@ -11,7 +11,9 @@ const Renderer = ({ value }: RendererProps) => {
 
   useEffect(() => {
     if (!rendererRef.current) return;
+
     const container = rendererRef.current;
+
     const quill = new Quill(document.createElement("div"), {
       theme: "snow",
     });
@@ -26,7 +28,6 @@ const Renderer = ({ value }: RendererProps) => {
         .getText()
         .replace(/<(.|\n)*?>/g, "")
         .trim().length === 0;
-
     setIsEmpty(isEmpty);
 
     container.innerHTML = quill.root.innerHTML;

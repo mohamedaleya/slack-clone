@@ -126,7 +126,7 @@ export const get = query({
             const reactionsWithCounts = reactions.map((reaction) => {
               return {
                 ...reaction,
-                const: reactions.filter((r) => r.value === reaction.value)
+                count: reactions.filter((r) => r.value === reaction.value)
                   .length,
               };
             });
@@ -146,7 +146,7 @@ export const get = query({
                 return acc;
               },
               [] as (Doc<"reactions"> & {
-                count?: number;
+                count: number;
                 memberIds: Id<"members">[];
               })[],
             );
