@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Doc, Id } from "../../convex/_generated/dataModel";
 import { format, isToday, isYesterday } from "date-fns";
+import { usePanel } from "@/hooks/use-panel";
 import { Hint } from "./hint";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Thumbnail } from "./thumbnail";
@@ -64,6 +65,7 @@ export const Message = ({
   threadImage,
   threadTimestamp,
 }: MessageProps) => {
+  const { parentMessageId, onOpenMessage, onClose } = usePanel();
   const [ConfirmDialog, confirm] = useConfirm(
     "Delete message",
     "Are you sure you want to delete this message? This cannot be undone.",
@@ -100,6 +102,9 @@ export const Message = ({
           toast.success("Message deleted");
 
           // TODO: Close thread if opened
+          if (parentMessageId === id) {
+            onClose();
+          }
         },
         onError: () => {
           toast.error("Failed to delete message");
@@ -169,7 +174,7 @@ export const Message = ({
               isAuthor={isAuthor}
               isPending={isPending}
               handleEdit={() => setEditingId(id)}
-              handleThread={() => {}}
+              handleThread={() => onOpenMessage(id)}
               handleDelete={handleRemove}
               handleReaction={handleReaction}
               hideThreadButton={hideThreadButton}
@@ -240,7 +245,7 @@ export const Message = ({
             isAuthor={isAuthor}
             isPending={isPending}
             handleEdit={() => setEditingId(id)}
-            handleThread={() => {}}
+            handleThread={() => onOpenMessage(id)}
             handleDelete={handleRemove}
             handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}
