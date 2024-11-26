@@ -1,14 +1,14 @@
 "use client";
 
-import { Sidebar } from "./components/sidebar";
-import { Toolbar } from "./components/toolbar";
+import { Sidebar } from "./_components/sidebar";
+import { Toolbar } from "./_components/toolbar";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { WorkspaceSidebar } from "./components/workspace-sidebar";
+import { WorkspaceSidebar } from "./_components/workspace-sidebar";
 import { usePanel } from "@/hooks/use-panel";
 import { Loader } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
