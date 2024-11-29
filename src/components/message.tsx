@@ -104,7 +104,6 @@ export const Message = ({
         onSuccess: () => {
           toast.success("Message deleted");
 
-          // TODO: Close thread if opened
           if (parentMessageId === id) {
             onClose();
           }
